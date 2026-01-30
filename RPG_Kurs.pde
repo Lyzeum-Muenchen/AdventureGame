@@ -1,19 +1,23 @@
 PImage spielerBild;
 PImage tree;
 PImage rubble;
+PImage monster;
 int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
 int seeY = 150;
 int feuerballX = 0;
 int feuerballY = 0;
-
 int[] terrainX = new int[100];
 int[] terrainY = new int[100];
 int[] terrainType = new int[100];
-void setup(){
+
+int monsterX = 500;
+int monsterY = 500;
+
+void setup() {
   fullScreen();
-  for(int i= 0; i < 100; i++){
+  for (int i= 0; i < 100; i++) {
     terrainX[i] = int(random(-1000, 1000));
     terrainY[i] = int(random(-1000, 1000));
     terrainType[i] = int(random(0, 3));
@@ -23,70 +27,82 @@ void setup(){
   spielerBild = loadImage("LittleWizard.png");
   tree = loadImage("tree.png");
   rubble = loadImage("rubble.png");
+  monster = loadImage("zombie.png");
 }
 
-void draw(){
+void draw() {
   background(20, 190, 50);
   fill(#5446D8);
-  for(int i = 0; i < 100; i++){
+  for (int i = 0; i < 100; i++) {
     drawTerrain(terrainX[i], terrainY[i], terrainType[i]);
   }
   fill(50);
-  
+
   fill(200, 0, 0);
   noStroke();
   circle(displayX(feuerballX), displayY(feuerballY), 20);
   feuerballX += 10;
   drawPlayer();
+  drawMonster();
+  monsterTurn();
 }
-
-void keyPressed(){
-  if(key == 'w'){
+void drawMonster() {
+  image(monster, displayX(monsterX), displayY(monsterY), 128, 128);
+}
+void monsterTurn() {
+  int dx = monsterX - spielerX;
+  int dy = monsterY - spielerY;
+  int l = int(sqrt(float(dy*dy + dx*dx)));
+  if (l != 0) {
+    monsterX -= 5*dx/l;
+    monsterY -= 5*dy/l;
+  }
+}
+void keyPressed() {
+  if (key == 'w') {
     spielerY = spielerY - 5;
     // oder spielerY -= 5;
   }
-  if(key == 's'){
+  if (key == 's') {
     spielerY = spielerY +5;
   }
-  if(key == 'a'){
+  if (key == 'a') {
     spielerX = spielerX -5;
   }
-  if(key == 'd'){
+  if (key == 'd') {
     spielerX = spielerX + 5;
   }
-  if(key == 'f'){
+  if (key == 'f') {
     feuerballX = spielerX;
     feuerballY = spielerY;
   }
 }
 
-void drawPlayer(){
+void drawPlayer() {
   image(spielerBild, width/2, height/2, 128, 128);
 }
 
-int displayX(int objektX){
+int displayX(int objektX) {
   int dx = objektX-spielerX;
   return width/2+dx;
 }
-int displayY(int objektY){
+int displayY(int objektY) {
   int dy = objektY-spielerY;
   return height/2+dy;
 }
-void drawTerrain(int x, int y, int type){
-  if(type == 0){
+void drawTerrain(int x, int y, int type) {
+  if (type == 0) {
     image(tree, displayX(x), displayY(y), 128, 128);
-  }
-  else if (type == 1){
+  } else if (type == 1) {
     image(rubble, displayX(x), displayY(y), 32, 32);
-  }
-  else if(type == 2){
+  } else if (type == 2) {
     stroke(0, 250, 0);
     strokeWeight(5);
-    line(displayX(x), displayY(y), 
+    line(displayX(x), displayY(y),
       displayX(x)+5, displayY(y)-20);
-    line(displayX(x)+10, displayY(y), 
+    line(displayX(x)+10, displayY(y),
       displayX(x)+10, displayY(y)-20);
-    line(displayX(x)-10, displayY(y), 
+    line(displayX(x)-10, displayY(y),
       displayX(x)-5, displayY(y)-20);
   }
 }
