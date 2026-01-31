@@ -1,12 +1,15 @@
 PImage spielerBild;
 PImage tree;
 PImage rubble;
+PImage monster;
 int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
 int seeY = 150;
 int feuerballX = 0;
 int feuerballY = 0;
+int monsterX = 200;
+int monsterY = -200;
 
 int[] terrainX = new int[100];
 int[] terrainY = new int[100];
@@ -23,6 +26,7 @@ void setup(){
   spielerBild = loadImage("LittleWizard.png");
   tree = loadImage("tree.png");
   rubble = loadImage("rubble.png");
+  monster = loadImage("zombie.png");
 }
 
 void draw(){
@@ -38,6 +42,9 @@ void draw(){
   circle(displayX(feuerballX), displayY(feuerballY), 20);
   feuerballX += 10;
   drawPlayer();
+  drawMonster();
+  
+  moveMonster();
 }
 
 void keyPressed(){
@@ -62,6 +69,14 @@ void keyPressed(){
 
 void drawPlayer(){
   image(spielerBild, width/2, height/2, 128, 128);
+}
+
+void drawMonster() {
+  image(monster, displayX(monsterX), displayY(monsterY), 128, 128);
+}
+
+void moveMonster() {
+  monsterX -= 2;
 }
 
 int displayX(int objektX){
