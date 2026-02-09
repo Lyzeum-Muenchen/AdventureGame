@@ -76,7 +76,16 @@ void drawMonster() {
 }
 
 void moveMonster() {
-  monsterX -= 2;
+  float dx = float(spielerX-monsterX);
+  float dy = float(spielerY-monsterY);
+  
+  float c = sqrt(dx*dx + dy*dy);
+  
+  float rx = dx/c;
+  float ry = dy/c;
+  
+  monsterX += int(rx*2);
+  monsterY += int(ry*2);
 }
 
 int displayX(int objektX){
