@@ -8,6 +8,9 @@ int seeX = 200;
 int seeY = 150;
 int feuerballX = 0;
 int feuerballY = 0;
+int feuerballvX = 0;
+int feuerballvY = 0;
+boolean feuerballActive = false;
 int monsterX = 200;
 int monsterY = -200;
 
@@ -39,12 +42,31 @@ void draw(){
   
   fill(200, 0, 0);
   noStroke();
-  circle(displayX(feuerballX), displayY(feuerballY), 20);
-  feuerballX += 10;
+  
   drawPlayer();
   drawMonster();
-  
+  drawFeuerball();
   moveMonster();
+}
+void drawFeuerball(){
+  if(feuerballActive){
+    circle(displayX(feuerballX), displayY(feuerballY), 20);
+    feuerballX += feuerballvX;
+    feuerballY += feuerballvY;
+  }
+}
+void fireFeuerball(){
+  feuerballActive = true;
+  
+  float dx = float(mouseX - width/2);
+  float dy = float(mouseY - height/2);
+  float l = sqrt(dx*dx + dy*dy);
+  
+  feuerballvX = int(dx/l*10);
+  feuerballvY = int(dy/l*10);
+  
+  feuerballX = spielerX;
+  feuerballY = spielerY;
 }
 
 void keyPressed(){
@@ -62,8 +84,7 @@ void keyPressed(){
     spielerX = spielerX + 5;
   }
   if(key == 'f'){
-    feuerballX = spielerX;
-    feuerballY = spielerY;
+    fireFeuerball();
   }
 }
 
