@@ -2,12 +2,19 @@ PImage spielerBild;
 PImage tree;
 PImage rubble;
 PImage monster;
+PImage fire;
 int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
 int seeY = 150;
+
 int feuerballX = 0;
 int feuerballY = 0;
+int feuerballVX = 0;
+int feuerballVY = 0;
+float feuerballWinkel = 0;
+boolean feuerballActive = false;
+
 int monsterX = 200;
 int monsterY = -200;
 
@@ -27,6 +34,7 @@ void setup(){
   tree = loadImage("tree.png");
   rubble = loadImage("rubble.png");
   monster = loadImage("zombie.png");
+  fire = loadImage("fireball.png");
 }
 
 void draw(){
@@ -37,16 +45,47 @@ void draw(){
   }
   fill(50);
   
-  fill(200, 0, 0);
-  noStroke();
-  circle(displayX(feuerballX), displayY(feuerballY), 20);
-  feuerballX += 10;
+  drawFeuerball();
   drawPlayer();
   drawMonster();
   
   moveMonster();
 }
-
+void drawFeuerball(){
+  if(feuerballActive){
+    fill(200, 0, 0);
+    noStroke();
+    
+    pushMatrix();
+    translate(displayX(feuerballX), displayY(feuerballY));
+    rotate(feuerballWinkel);
+    image(fire, 0, 0, 64, 64);
+    popMatrix();
+    
+    feuerballX += feuerballVX;
+    feuerballY += feuerballVY;
+  }
+}
+void fireFeuerball(){
+  feuerballActive = true;
+  
+  feuerballX = spielerX;
+  feuerballY = spielerY;
+  
+  float dx = float(mouseX - width/2);
+  float dy = float(mouseY - height/2);
+  
+  float l = sqrt(dx*dx + dy*dy);
+  feuerballVX = int(10*dx/l);
+  feuerballVY = int(10*dy/l);
+  
+  if(dx < 0){
+    feuerballWinkel = PI + atan(dy/dx);
+  }
+  else{
+    feuerballWinkel = atan(dy/dx);
+  }
+}
 void keyPressed(){
   if(key == 'w'){
     spielerY = spielerY - 5;
@@ -62,8 +101,7 @@ void keyPressed(){
     spielerX = spielerX + 5;
   }
   if(key == 'f'){
-    feuerballX = spielerX;
-    feuerballY = spielerY;
+    fireFeuerball();
   }
 }
 
