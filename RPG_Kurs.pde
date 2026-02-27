@@ -7,7 +7,7 @@ int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
 int seeY = 150;
-
+Monster zombie1;
 int feuerballX = 0;
 int feuerballY = 0;
 int feuerballVX = 0;
@@ -35,6 +35,8 @@ void setup(){
   rubble = loadImage("rubble.png");
   monster = loadImage("zombie.png");
   fire = loadImage("fireball.png");
+  
+  zombie1 = new Monster(500, 500);
 }
 
 void draw(){
@@ -47,9 +49,7 @@ void draw(){
   
   drawFeuerball();
   drawPlayer();
-  drawMonster();
-  
-  moveMonster();
+  zombie1.turn();
 }
 void drawFeuerball(){
   if(feuerballActive){
