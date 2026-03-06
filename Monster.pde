@@ -37,4 +37,17 @@ public class Monster {
     this.x += int(rx*2);
     this.y += int(ry*2);
   }
+  void checkDeath(){
+    int dx = feuerballX-this.x;
+    int dy = feuerballY-this.y;
+    int d2 = dx*dx + dy*dy;
+    if(d2 < 800){
+      this.alive = false;
+    }
+  }
+  void turn(){
+    this.moveMonster();
+    this.drawMonster();
+    this.checkDeath();
+  }
 }

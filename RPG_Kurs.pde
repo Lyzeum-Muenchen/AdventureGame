@@ -11,8 +11,6 @@ Monster kevin;
 
 int spielerX = 0;
 int spielerY = 0;
-int seeX = 200;
-int seeY = 150;
 
 int feuerballX = 0;
 int feuerballY = 0;
@@ -22,18 +20,13 @@ float feuerballWinkel = 0;
 
 boolean feuerballActive = false;
 
-int monsterX = 200;
-int monsterY = -200;
 
-int[] terrainX = new int[100];
-int[] terrainY = new int[100];
-int[] terrainType = new int[100];
+Terrain[] landscape = new Terrain[100];
+
 void setup(){
   fullScreen();
   for(int i= 0; i < 100; i++){
-    terrainX[i] = int(random(-1000, 1000));
-    terrainY[i] = int(random(-1000, 1000));
-    terrainType[i] = int(random(0, 3));
+    landscape[i] = new Terrain();
   }
   smooth(0);
   imageMode(CENTER);
@@ -51,26 +44,20 @@ void setup(){
 
 void draw(){
   background(20, 190, 50);
-  fill(#5446D8);
+  
   for(int i = 0; i < 100; i++){
-    drawTerrain(terrainX[i], terrainY[i], terrainType[i]);
+    landscape[i].drawTerrain();
   }
-  fill(50);
+  
   
   drawFeuerball();
   drawPlayer();
-  drawMonster();
   
-  moveMonster();
+  otto.turn();
+  leopold.turn();
+  kevin.turn();
+  paul.turn();
   
-  otto.drawMonster();
-  otto.moveMonster();
-  paul.drawMonster();
-  paul.moveMonster();
-  leopold.drawMonster();
-  leopold.moveMonster();
-  kevin.drawMonster();
-  kevin.moveMonster();
 }
 void drawFeuerball(){
   if(feuerballActive){
@@ -130,23 +117,6 @@ void drawPlayer(){
   image(spielerBild, width/2, height/2, 128, 128);
 }
 
-void drawMonster() {
-  image(monster, displayX(monsterX), displayY(monsterY), 128, 128);
-}
-
-void moveMonster() {
-  float dx = float(spielerX-monsterX);
-  float dy = float(spielerY-monsterY);
-  
-  float c = sqrt(dx*dx + dy*dy);
-  
-  float rx = dx/c;
-  float ry = dy/c;
-  
-  monsterX += int(rx*2);
-  monsterY += int(ry*2);
-}
-
 int displayX(int objektX){
   int dx = objektX-spielerX;
   return width/2+dx;
@@ -154,22 +124,4 @@ int displayX(int objektX){
 int displayY(int objektY){
   int dy = objektY-spielerY;
   return height/2+dy;
-}
-void drawTerrain(int x, int y, int type){
-  if(type == 0){
-    image(tree, displayX(x), displayY(y), 128, 128);
-  }
-  else if (type == 1){
-    image(rubble, displayX(x), displayY(y), 32, 32);
-  }
-  else if(type == 2){
-    stroke(0, 250, 0);
-    strokeWeight(5);
-    line(displayX(x), displayY(y), 
-      displayX(x)+5, displayY(y)-20);
-    line(displayX(x)+10, displayY(y), 
-      displayX(x)+10, displayY(y)-20);
-    line(displayX(x)-10, displayY(y), 
-      displayX(x)-5, displayY(y)-20);
-  }
 }
