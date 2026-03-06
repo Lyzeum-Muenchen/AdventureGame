@@ -3,6 +3,12 @@ PImage tree;
 PImage rubble;
 PImage monster;
 PImage fire;
+
+Monster otto;
+Monster paul;
+Monster leopold;
+Monster kevin;
+
 int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
@@ -13,6 +19,7 @@ int feuerballY = 0;
 int feuerballVX = 0;
 int feuerballVY = 0;
 float feuerballWinkel = 0;
+
 boolean feuerballActive = false;
 
 int monsterX = 200;
@@ -35,6 +42,11 @@ void setup(){
   rubble = loadImage("rubble.png");
   monster = loadImage("zombie.png");
   fire = loadImage("fireball.png");
+  
+  paul = new Monster(500, 500);
+  otto = new Monster(-500, 500);
+  kevin = new Monster();
+  leopold = new Monster();
 }
 
 void draw(){
@@ -50,6 +62,15 @@ void draw(){
   drawMonster();
   
   moveMonster();
+  
+  otto.drawMonster();
+  otto.moveMonster();
+  paul.drawMonster();
+  paul.moveMonster();
+  leopold.drawMonster();
+  leopold.moveMonster();
+  kevin.drawMonster();
+  kevin.moveMonster();
 }
 void drawFeuerball(){
   if(feuerballActive){
