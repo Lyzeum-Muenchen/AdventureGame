@@ -1,7 +1,6 @@
 PImage spielerBild;
 PImage tree;
 PImage rubble;
-PImage monster;
 PImage fire;
 
 Monster otto;
@@ -22,9 +21,6 @@ float feuerballWinkel = 0;
 
 boolean feuerballActive = false;
 
-int monsterX = 200;
-int monsterY = -200;
-
 int[] terrainX = new int[100];
 int[] terrainY = new int[100];
 int[] terrainType = new int[100];
@@ -40,7 +36,6 @@ void setup(){
   spielerBild = loadImage("LittleWizard.png");
   tree = loadImage("tree.png");
   rubble = loadImage("rubble.png");
-  monster = loadImage("zombie.png");
   fire = loadImage("fireball.png");
   
   paul = new Monster(500, 500);
@@ -59,18 +54,11 @@ void draw(){
   
   drawFeuerball();
   drawPlayer();
-  drawMonster();
   
-  moveMonster();
-  
-  otto.drawMonster();
-  otto.moveMonster();
-  paul.drawMonster();
-  paul.moveMonster();
-  leopold.drawMonster();
-  leopold.moveMonster();
-  kevin.drawMonster();
-  kevin.moveMonster();
+  otto.act();
+  leopold.act();
+  kevin.act();
+  paul.act();
 }
 void drawFeuerball(){
   if(feuerballActive){
@@ -128,23 +116,6 @@ void keyPressed(){
 
 void drawPlayer(){
   image(spielerBild, width/2, height/2, 128, 128);
-}
-
-void drawMonster() {
-  image(monster, displayX(monsterX), displayY(monsterY), 128, 128);
-}
-
-void moveMonster() {
-  float dx = float(spielerX-monsterX);
-  float dy = float(spielerY-monsterY);
-  
-  float c = sqrt(dx*dx + dy*dy);
-  
-  float rx = dx/c;
-  float ry = dy/c;
-  
-  monsterX += int(rx*2);
-  monsterY += int(ry*2);
 }
 
 int displayX(int objektX){

@@ -18,8 +18,8 @@ public class Monster {
     this.img = loadImage("zombie.png");
   }
   void drawMonster() {
-    if (alive) {
-      image(img,
+    if (this.alive) {
+      image(this.img,
         displayX(this.x),
         displayY(this.y),
         128, 128);
@@ -36,5 +36,19 @@ public class Monster {
 
     this.x += int(rx*2);
     this.y += int(ry*2);
+  }
+
+  void checkDead() {
+    float dx = float(feuerballX - this.x);
+    float dy = float(feuerballY - this.y);
+    float l = sqrt(dx*dx + dy*dy);
+    if (l < 30){
+      alive = false;
+    }
+  }
+  void act(){
+    this.checkDead();
+    this.drawMonster();
+    this.moveMonster();
   }
 }
