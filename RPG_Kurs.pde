@@ -8,6 +8,11 @@ Monster paul;
 Monster leopold;
 Monster kevin;
 
+Terrain[] terrains = new Terrain[1000];
+
+int cooldown = 0;
+boolean gameOver = false;
+
 int spielerX = 0;
 int spielerY = 0;
 int seeX = 200;
@@ -21,15 +26,11 @@ float feuerballWinkel = 0;
 
 boolean feuerballActive = false;
 
-int[] terrainX = new int[100];
-int[] terrainY = new int[100];
-int[] terrainType = new int[100];
+
 void setup(){
   fullScreen();
-  for(int i= 0; i < 100; i++){
-    terrainX[i] = int(random(-1000, 1000));
-    terrainY[i] = int(random(-1000, 1000));
-    terrainType[i] = int(random(0, 3));
+  for(int i= 0; i < 1000; i++){
+    terrains[i] = new Terrain();
   }
   smooth(0);
   imageMode(CENTER);
@@ -42,13 +43,23 @@ void setup(){
   otto = new Monster(-500, 500);
   kevin = new Monster();
   leopold = new Monster();
+  
+  
 }
 
 void draw(){
+  if(gameOver){
+    background(0);
+    textSize(128);
+    fill(200, 0, 0);
+    textAlign(CENTER);
+    text("Game Over!", width/2, height/2);
+    return;
+  }
   background(20, 190, 50);
   fill(#5446D8);
-  for(int i = 0; i < 100; i++){
-    drawTerrain(terrainX[i], terrainY[i], terrainType[i]);
+  for(int i = 0; i < 1000; i++){
+    terrains[i].drawTerrain();
   }
   fill(50);
   
@@ -59,6 +70,10 @@ void draw(){
   leopold.act();
   kevin.act();
   paul.act();
+  
+  if(cooldown > 0){
+    cooldown--;
+  }
 }
 void drawFeuerball(){
   if(feuerballActive){
@@ -76,6 +91,9 @@ void drawFeuerball(){
   }
 }
 void fireFeuerball(){
+  if(cooldown> 0){
+    return;
+  }
   feuerballActive = true;
   
   feuerballX = spielerX;
@@ -125,22 +143,4 @@ int displayX(int objektX){
 int displayY(int objektY){
   int dy = objektY-spielerY;
   return height/2+dy;
-}
-void drawTerrain(int x, int y, int type){
-  if(type == 0){
-    image(tree, displayX(x), displayY(y), 128, 128);
-  }
-  else if (type == 1){
-    image(rubble, displayX(x), displayY(y), 32, 32);
-  }
-  else if(type == 2){
-    stroke(0, 250, 0);
-    strokeWeight(5);
-    line(displayX(x), displayY(y), 
-      displayX(x)+5, displayY(y)-20);
-    line(displayX(x)+10, displayY(y), 
-      displayX(x)+10, displayY(y)-20);
-    line(displayX(x)-10, displayY(y), 
-      displayX(x)-5, displayY(y)-20);
-  }
 }
