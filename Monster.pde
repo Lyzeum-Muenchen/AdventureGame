@@ -42,7 +42,7 @@ public class Monster {
     float dx = float(feuerballX - this.x);
     float dy = float(feuerballY - this.y);
     float l = sqrt(dx*dx + dy*dy);
-    if (l < 30){
+    if (l < 30 && feuerballActive){
       alive = false;
     }
   }
