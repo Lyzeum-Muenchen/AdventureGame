@@ -19,7 +19,27 @@ boolean feuerballActive = false;
 
 int spawnCooldown = 50;
 
+boolean gameOver = false;
+
 Terrain[] terrains = new Terrain[100];
+
+void startGame(){
+  for(int i= 0; i < 100; i++){
+    terrains[i] = new Terrain();
+  }
+  while(!monsters.isEmpty()){
+    monsters.remove(0);
+  }
+  monsters.add(new Monster(500, 500));
+  monsters.add(new Monster(-500, 500));
+  monsters.add(new Monster());
+  monsters.add(new Monster());
+  feuerballActive = false;
+  spielerX = 0;
+  spielerY = 0;
+  spawnCooldown = 50;
+  gameOver = false;
+}
 void setup(){
   fullScreen();
   for(int i= 0; i < 100; i++){
@@ -32,13 +52,20 @@ void setup(){
   rubble = loadImage("rubble.png");
   fire = loadImage("fireball.png");
   
-  monsters.add(new Monster(500, 500));
-  monsters.add(new Monster(-500, 500));
-  monsters.add(new Monster());
-  monsters.add(new Monster());
+  startGame();
 }
 
 void draw(){
+  if (gameOver){
+    background(0);
+    fill(200, 0, 0);
+    textSize(128);
+    textAlign(CENTER);
+    text(width/2, height/2, "GAME OVER");
+    textSize(60);
+    fill(200);
+    text(width/2, height/2+100, "Press Any Key to Restart");
+  }
   background(20, 190, 50);
   fill(#5446D8);
   for(int i = 0; i < 100; i++){
@@ -106,6 +133,9 @@ void keyPressed(){
   }
   if(key == 'f'){
     fireFeuerball();
+  }
+  if(gameOver){
+    startGame();
   }
 }
 
