@@ -46,8 +46,19 @@ public class Monster {
       alive = false;
     }
   }
+  
+  void checkKill() {
+    float dx = float(spielerX - this.x);
+    float dy = float(spielerY - this.y);
+    float l = sqrt(dx * dx + dy * dy);
+    if (l < 30 && alive) {
+      gameOver = true;
+    }
+  }
+  
   void act(){
     this.checkDead();
+    this.checkKill();
     this.drawMonster();
     this.moveMonster();
   }

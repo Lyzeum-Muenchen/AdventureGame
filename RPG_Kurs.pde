@@ -18,13 +18,12 @@ float feuerballWinkel = 0;
 boolean feuerballActive = false;
 
 int spawnCooldown = 50;
+boolean gameOver = false;
 
 Terrain[] terrains = new Terrain[100];
 void setup(){
   fullScreen();
-  for(int i= 0; i < 100; i++){
-    terrains[i] = new Terrain();
-  }
+  
   smooth(0);
   imageMode(CENTER);
   spielerBild = loadImage("LittleWizard.png");
@@ -32,28 +31,55 @@ void setup(){
   rubble = loadImage("rubble.png");
   fire = loadImage("fireball.png");
   
+  startGame();
+}
+
+void startGame() {
+  for(int i= 0; i < 100; i++){
+    terrains[i] = new Terrain();
+  }
+  monsters = new ArrayList<Monster>();
   monsters.add(new Monster(500, 500));
   monsters.add(new Monster(-500, 500));
   monsters.add(new Monster());
   monsters.add(new Monster());
+  feuerballActive = false;
+  spielerX = 0;
+  spielerY = 0;
+  spawnCooldown = 50;
+  gameOver = false;
 }
 
 void draw(){
-  background(20, 190, 50);
-  fill(#5446D8);
-  for(int i = 0; i < 100; i++){
-    terrains[i].drawTerrain();
+  if (gameOver) {
+    background(0);
+    fill(200, 0, 0);
+    textAlign(CENTER);
+    PFont arialBold = createFont("Arial Bold", 128);
+    PFont arial = createFont("Arial", 60);
+    textFont(arialBold);
+    text("GAME OVER", width/2, height/2);
+    textFont(arial);
+    fill(200);
+    text("Press Any Key to Restart", width/2, height/2 + 100);
+    
+  } else {
+    background(20, 190, 50);
+    fill(#5446D8);
+    for(int i = 0; i < 100; i++){
+      terrains[i].drawTerrain();
+    }
+    fill(50);
+    
+    drawFeuerball();
+    drawPlayer();
+    
+    for(int i = 0; i<monsters.size(); i++){
+      monsters.get(i).act();
+    }
+    
+    spawnMonster();
   }
-  fill(50);
-  
-  drawFeuerball();
-  drawPlayer();
-  
-  for(int i = 0; i<monsters.size(); i++){
-    monsters.get(i).act();
-  }
-  
-  spawnMonster();
 }
 void drawFeuerball(){
   if(feuerballActive){
@@ -91,6 +117,9 @@ void fireFeuerball(){
   }
 }
 void keyPressed(){
+  if (gameOver) {
+    startGame();
+  }
   if(key == 'w'){
     spielerY = spielerY - 5;
     // oder spielerY -= 5;
