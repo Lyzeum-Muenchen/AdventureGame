@@ -8,14 +8,26 @@ public class Monster {
     this.x = x;
     this.y = y;
     this.alive = true;
-    this.img = loadImage("zombie.png");
+    float zufall = random(1);
+    if(zufall > 0.5){
+      this.img = loadImage("skeleton.png");
+    }
+    else{
+      this.img = loadImage("zombie.png");
+    }
   }
 
   public Monster() {
     this.x = int(random(-1000, 1000));
     this.y = int(random(-1000, 1000));
     this.alive = true;
-    this.img = loadImage("zombie.png");
+    float zufall = random(1);
+    if(zufall > 0.5){
+      this.img = loadImage("skeleton.png");
+    }
+    else{
+      this.img = loadImage("zombie.png");
+    }
   }
   void drawMonster() {
     if (this.alive) {

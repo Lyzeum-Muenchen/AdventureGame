@@ -1,8 +1,11 @@
+import java.util.HashSet;
+
 PImage spielerBild;
 PImage tree;
 PImage rubble;
 PImage fire;
 
+HashSet<Character> pressedKeys = new HashSet<Character>();
 ArrayList<Monster> monsters = new ArrayList<Monster>();
 
 int spielerX = 0;
@@ -51,6 +54,7 @@ void startGame() {
 }
 
 void draw(){
+  handleKeys();
   if (gameOver) {
     background(0);
     fill(200, 0, 0);
@@ -117,23 +121,30 @@ void fireFeuerball(){
   }
 }
 void keyPressed(){
-  if (gameOver) {
+  pressedKeys.add(key);
+}
+void keyReleased(){
+  pressedKeys.remove(key);
+}
+
+void handleKeys(){
+  if (gameOver && !pressedKeys.isEmpty()) {
     startGame();
   }
-  if(key == 'w'){
+  if(pressedKeys.contains('w')){
     spielerY = spielerY - 5;
     // oder spielerY -= 5;
   }
-  if(key == 's'){
+  if(pressedKeys.contains('s')){
     spielerY = spielerY +5;
   }
-  if(key == 'a'){
+  if(pressedKeys.contains('a')){
     spielerX = spielerX -5;
   }
-  if(key == 'd'){
+  if(pressedKeys.contains('d')){
     spielerX = spielerX + 5;
   }
-  if(key == 'f'){
+  if(pressedKeys.contains('f')){
     fireFeuerball();
   }
 }
